@@ -1,0 +1,21 @@
+version: "3"
+services:
+  elixir:
+    depends_on:
+      - bearer-proxy
+    build: .
+    volumes:
+      - ../data:/data
+    environment:
+      HTTP_PROXY: "http://bearer-proxy:6348"
+  bearer-proxy:
+    image: bearerhub/bearer-proxy:0.1
+    environment:
+      APP_ENV: "ADD YOUR ENV HERE" # eg. "development"
+      BEARER_SECRET_KEY: "ADD YOUR SECRET KEY HERE" # eg. "app_abc123"
+      CA_CERT: "/data/ca.crt"
+      CA_KEY: "/data/ca.key"
+    ports:
+      - "6348:6348"
+    volumes:
+      - ../data:/data
